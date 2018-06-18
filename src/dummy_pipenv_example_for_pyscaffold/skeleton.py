@@ -21,6 +21,8 @@ import argparse
 import sys
 import logging
 
+from appdirs import user_config_dir
+
 from dummy_pipenv_example_for_pyscaffold import __version__
 
 __author__ = "Anderson Bravalheri"
@@ -62,9 +64,14 @@ def parse_args(args):
         action='version',
         version='dummy-pipenv-example-for-pyscaffold {ver}'.format(ver=__version__))
     parser.add_argument(
+            '--appdir',
+            action='store_true')
+    parser.add_argument(
         dest="n",
         help="n-th Fibonacci number",
         type=int,
+        default=0,
+        nargs='?',
         metavar="INT")
     parser.add_argument(
         '-v',
@@ -102,6 +109,9 @@ def main(args):
     """
     args = parse_args(args)
     setup_logging(args.loglevel)
+    if args.appdir:
+        print('User config dir: ', user_config_dir(__package__))
+        return
     _logger.debug("Starting crazy calculations...")
     print("The {}-th Fibonacci number is {}".format(args.n, fib(args.n)))
     _logger.info("Script ends here")
